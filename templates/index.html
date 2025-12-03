@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,12 @@
 </head>
 <body>
     <div class="container">
+        <!-- Theme Toggle Button -->
+        <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()">
+            <span class="sun-icon">☀️</span>
+            <span class="moon-icon">🌙</span>
+        </button>
+
         <!-- Header Section -->
         <header>
             <h1>🍳 Food Finder</h1>
@@ -84,6 +90,35 @@
                 </div>
             </div>
 
+            <!-- Nutrition Section -->
+            {% if nutrition %}
+            <div class="section-card nutrition-card">
+                <h3>🍎 Nutrition Facts <span class="nutrition-note">(per serving, estimated)</span></h3>
+                <div class="nutrition-grid">
+                    <div class="nutrition-item">
+                        <span class="nutrition-value">{{ nutrition.calories }}</span>
+                        <span class="nutrition-label">Calories</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-value">{{ nutrition.protein }}g</span>
+                        <span class="nutrition-label">Protein</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-value">{{ nutrition.carbs }}g</span>
+                        <span class="nutrition-label">Carbs</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-value">{{ nutrition.fat }}g</span>
+                        <span class="nutrition-label">Fat</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-value">{{ nutrition.fiber }}g</span>
+                        <span class="nutrition-label">Fiber</span>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
             <!-- Ingredients Section -->
             <div class="section-card">
                 <h3>🥗 Ingredients</h3>
@@ -155,6 +190,21 @@
     </div>
 
     <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Load saved theme
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        });
+
         // Show loading spinner when searching
         document.getElementById('search-form').addEventListener('submit', function() {
             document.querySelector('.button-text').classList.add('hidden');
