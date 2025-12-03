@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Finder - Find Any Recipe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header>
+            <h1>🍳 Food Finder</h1>
+            <p class="subtitle">Find recipes, videos, and ingredients for any food!</p>
+        </header>
+
+        <!-- Search Section -->
+        <section id="search-section">
+            <form id="search-form" action="/search" method="GET">
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    name="food" 
+                    placeholder="Type any food... (e.g., chicken biryani, ramen, pizza)"
+                    value="{{ searched_food or '' }}"
+                    required
+                >
+                <button type="submit" id="search-button">
+                    <span class="button-text">Search</span>
+                    <span class="spinner hidden"></span>
+                </button>
+            </form>
+            
+            <!-- Popular Searches -->
+            {% if not searched_food %}
+            <div class="popular-searches">
+                <p>Popular searches:</p>
+                <div class="popular-tags">
+                    <a href="/search?food=pizza" class="popular-tag">🍕 Pizza</a>
+                    <a href="/search?food=sushi" class="popular-tag">🍣 Sushi</a>
+                    <a href="/search?food=tacos" class="popular-tag">🌮 Tacos</a>
+                    <a href="/search?food=pasta" class="popular-tag">🍝 Pasta</a>
+                    <a href="/search?food=biryani" class="popular-tag">🍚 Biryani</a>
+                    <a href="/search?food=ramen" class="popular-tag">🍜 Ramen</a>
+                </div>
+            </div>
+            {% endif %}
+        </section>
+
+        <!-- Error Message -->
+        {% if error %}
+        <section id="error-section" class="fade-in">
+            <p class="error-message">❌ {{ error }}</p>
+            <div class="error-suggestions">
+                <p>Try one of these instead:</p>
+                <div class="popular-tags">
+                    <a href="/search?food=chicken" class="popular-tag">🍗 Chicken</a>
+                    <a href="/search?food=beef" class="popular-tag">🥩 Beef</a>
+                    <a href="/search?food=salmon" class="popular-tag">🐟 Salmon</a>
+                    <a href="/search?food=soup" class="popular-tag">🍲 Soup</a>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Recipe Results -->
+        {% if recipe %}
+        <section id="results" class="fade-in">
+            <!-- Recipe Header -->
+            <div class="recipe-header">
+                {% if recipe.image %}
+                <img src="{{ recipe.image }}" alt="{{ recipe.name }}" class="recipe-image">
+                {% endif %}
+                <div class="recipe-info">
+                    <h2>{{ recipe.name }}</h2>
+                    {% if recipe.cuisine or recipe.category %}
+                    <p class="recipe-meta">
+                        {% if recipe.cuisine %}🌍 {{ recipe.cuisine }}{% endif %}
+                        {% if recipe.cuisine and recipe.category %} • {% endif %}
+                        {% if recipe.category %}🏷️ {{ recipe.category }}{% endif %}
+                    </p>
+                    {% endif %}
+                    <p class="ingredient-count">📦 {{ recipe.ingredients|length }} ingredients needed</p>
+                </div>
+            </div>
+
+            <!-- Ingredients Section -->
+            <div class="section-card">
+                <h3>🥗 Ingredients</h3>
+                <ul class="ingredient-list">
+                    {% for item in recipe.ingredients %}
+                    <li class="ingredient-item">
+                        <div class="ingredient-details">
+                            <span class="ingredient-measure">{{ item.measure }}</span>
+                            <span class="ingredient-name">{{ item.name }}</span>
+                        </div>
+                        <div class="ingredient-links">
+                            <a href="{{ item.amazon_link }}" target="_blank" class="buy-link amazon">Amazon</a>
+                            <a href="{{ item.google_link }}" target="_blank" class="buy-link google">Google</a>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Instructions Section -->
+            <div class="section-card">
+                <h3>📝 Cooking Instructions</h3>
+                <div class="instructions">
+                    {% set step_num = namespace(value=1) %}
+                    {% for step in recipe.instructions.split('\n') %}
+                        {% if step.strip() %}
+                        <div class="instruction-step">
+                            <span class="step-number">{{ step_num.value }}</span>
+                            <p class="step-text">{{ step.strip() }}</p>
+                        </div>
+                        {% set step_num.value = step_num.value + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- YouTube Videos Section -->
+        {% if videos %}
+        <section id="videos-section" class="fade-in">
+            <h3>🎬 Tutorial Videos</h3>
+            <div class="videos-grid">
+                {% for video in videos %}
+                <a href="{{ video.url }}" target="_blank" class="video-card">
+                    <div class="video-thumbnail-wrapper">
+                        <img src="{{ video.thumbnail }}" alt="{{ video.title }}" class="video-thumbnail">
+                        <div class="play-icon">▶</div>
+                    </div>
+                    <div class="video-info">
+                        <h4 class="video-title">{{ video.title }}</h4>
+                        <p class="video-channel">{{ video.channel }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Back to Top Button -->
+        {% if recipe or videos %}
+        <button id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+        {% endif %}
+
+        <!-- Footer -->
+        <footer>
+            <p>Built with ❤️ while learning to code</p>
+        </footer>
+    </div>
+
+    <script>
+        // Show loading spinner when searching
+        document.getElementById('search-form').addEventListener('submit', function() {
+            document.querySelector('.button-text').classList.add('hidden');
+            document.querySelector('.spinner').classList.remove('hidden');
+            document.getElementById('search-button').disabled = true;
+        });
+
+        // Back to top button visibility
+        window.addEventListener('scroll', function() {
+            const backToTop = document.getElementById('back-to-top');
+            if (backToTop) {
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
