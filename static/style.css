@@ -1,35 +1,35 @@
-/* style.css - Styles for Food Finder with Dark Mode */
+/* Restaurant Menu Styles with Dark Mode */
 
 /* CSS Variables for Theming */
 :root[data-theme="light"] {
-    --bg-primary: #f5f7fa;
+    --bg-primary: #f9f6f2;
     --bg-secondary: #ffffff;
-    --bg-tertiary: #f8f9fa;
-    --text-primary: #333333;
+    --bg-card: #fefefe;
+    --text-primary: #2c2c2c;
     --text-secondary: #666666;
-    --text-muted: #888888;
-    --accent-color: #e74c3c;
-    --accent-hover: #c0392b;
-    --border-color: #eeeeee;
+    --text-muted: #999999;
+    --accent-color: #c7a17a;
+    --accent-hover: #b08968;
+    --border-color: #e8e8e8;
     --shadow-color: rgba(0, 0, 0, 0.1);
-    --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
 :root[data-theme="dark"] {
-    --bg-primary: #1a1a2e;
-    --bg-secondary: #16213e;
-    --bg-tertiary: #1f2940;
-    --text-primary: #eaeaea;
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --bg-card: #252525;
+    --text-primary: #f0f0f0;
     --text-secondary: #b0b0b0;
-    --text-muted: #888888;
-    --accent-color: #e74c3c;
-    --accent-hover: #ff6b5b;
-    --border-color: #2a2a4a;
+    --text-muted: #808080;
+    --accent-color: #d4af7a;
+    --accent-hover: #e0c097;
+    --border-color: #404040;
     --shadow-color: rgba(0, 0, 0, 0.3);
-    --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Reset and base styles */
+/* Reset and Base Styles */
 * {
     margin: 0;
     padding: 0;
@@ -37,12 +37,12 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Georgia', 'Times New Roman', serif;
     background: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
     min-height: 100vh;
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Theme Toggle Button */
@@ -62,11 +62,12 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
 }
 
 .theme-toggle:hover {
     transform: scale(1.1);
+    background: var(--accent-color);
 }
 
 [data-theme="light"] .moon-icon { display: none; }
@@ -74,9 +75,9 @@ body {
 [data-theme="dark"] .moon-icon { display: block; }
 [data-theme="dark"] .sun-icon { display: none; }
 
-/* Main container */
+/* Container */
 .container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
 }
@@ -87,596 +88,192 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-.fade-in {
-    animation: fadeIn 0.5s ease-out;
-}
-
 /* Header */
 header {
     text-align: center;
-    padding: 40px 0;
+    padding: 60px 20px 40px;
+    animation: fadeIn 0.6s ease-out;
 }
 
 header h1 {
-    font-size: 3rem;
+    font-size: 3.5rem;
     color: var(--accent-color);
     margin-bottom: 10px;
-    text-shadow: 2px 2px 4px var(--shadow-color);
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .subtitle {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: var(--text-secondary);
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Search Section */
-#search-section {
-    background-color: var(--bg-secondary);
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: var(--card-shadow);
-    margin-bottom: 30px;
+/* Menu Container */
+.menu-container {
+    animation: fadeIn 0.8s ease-out 0.2s both;
 }
 
-#search-form {
-    display: flex;
-    gap: 10px;
-}
-
-#search-input {
-    flex: 1;
-    padding: 15px 20px;
-    font-size: 1.1rem;
-    border: 2px solid var(--border-color);
-    border-radius: 10px;
-    outline: none;
-    transition: all 0.3s;
-    background: var(--bg-tertiary);
-    color: var(--text-primary);
-}
-
-#search-input:focus {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 10px rgba(231, 76, 60, 0.2);
-}
-
-#search-input::placeholder {
-    color: var(--text-muted);
-}
-
-#search-button {
-    padding: 15px 30px;
-    font-size: 1.1rem;
-    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s;
-    min-width: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#search-button:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
-}
-
-#search-button:disabled {
-    opacity: 0.8;
-    cursor: not-allowed;
-}
-
-.hidden {
-    display: none !important;
-}
-
-.spinner {
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255,255,255,0.3);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-}
-
-/* Popular Searches */
-.popular-searches {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.popular-searches p {
-    color: var(--text-secondary);
-    margin-bottom: 10px;
-    font-size: 0.95rem;
-}
-
-.popular-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-}
-
-.popular-tag {
-    padding: 8px 16px;
-    background-color: var(--bg-tertiary);
-    border-radius: 20px;
-    text-decoration: none;
-    color: var(--text-primary);
-    font-size: 0.9rem;
-    transition: all 0.3s;
-    border: 1px solid var(--border-color);
-}
-
-.popular-tag:hover {
-    background-color: var(--accent-color);
-    color: white;
-    border-color: var(--accent-color);
-    transform: translateY(-2px);
-}
-
-/* Error Section */
-#error-section {
-    margin-bottom: 30px;
-}
-
-.error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 1.1rem;
-}
-
-.error-suggestions {
-    background-color: var(--bg-secondary);
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 15px;
-    text-align: center;
-}
-
-.error-suggestions p {
-    color: var(--text-secondary);
-    margin-bottom: 10px;
-}
-
-/* Results Section */
-#results {
-    background-color: var(--bg-secondary);
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: var(--card-shadow);
-    margin-bottom: 30px;
-}
-
-/* Recipe Header */
-.recipe-header {
-    display: flex;
-    gap: 25px;
-    margin-bottom: 30px;
-    padding-bottom: 25px;
-    border-bottom: 2px solid var(--border-color);
-}
-
-.recipe-image {
-    width: 220px;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 15px;
-    box-shadow: var(--card-shadow);
-}
-
-.recipe-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.recipe-info h2 {
-    font-size: 2.2rem;
-    color: var(--text-primary);
-    margin-bottom: 10px;
-}
-
-.recipe-meta {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-}
-
-.ingredient-count {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-}
-
-/* Section Cards */
-.section-card {
-    margin-bottom: 25px;
-}
-
-.section-card h3 {
-    color: var(--accent-color);
-    font-size: 1.4rem;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--accent-color);
-}
-
-/* Nutrition Card */
-.nutrition-card h3 {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.nutrition-note {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    font-weight: normal;
-}
-
-.nutrition-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 15px;
-}
-
-.nutrition-item {
-    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
-    padding: 20px 15px;
+/* Menu Category Section */
+.menu-category {
+    background: var(--bg-secondary);
+    padding: 40px;
     border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 40px;
+    transition: all 0.3s ease;
+}
+
+.category-title {
+    font-size: 2rem;
+    color: var(--accent-color);
     text-align: center;
-    color: white;
-    transition: transform 0.3s;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--accent-color);
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
-.nutrition-item:hover {
-    transform: translateY(-3px);
-}
-
-.nutrition-value {
-    display: block;
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.nutrition-label {
-    font-size: 0.85rem;
-    opacity: 0.9;
-}
-
-/* Ingredients List */
-.ingredient-list {
-    list-style: none;
+/* Menu Items */
+.menu-items {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 25px;
 }
 
-.ingredient-item {
-    padding: 15px;
-    background-color: var(--bg-tertiary);
-    border-radius: 10px;
+.menu-item {
+    padding: 20px;
+    background: var(--bg-card);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.menu-item:hover {
+    transform: translateX(5px);
+    box-shadow: var(--card-shadow);
+    border-color: var(--accent-color);
+}
+
+.item-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    transition: all 0.3s;
-}
-
-.ingredient-item:hover {
-    transform: translateX(5px);
-}
-
-.ingredient-details {
-    display: flex;
-    gap: 10px;
-    flex: 1;
-}
-
-.ingredient-measure {
-    font-weight: bold;
-    color: var(--accent-color);
-    min-width: 80px;
-}
-
-.ingredient-name {
-    color: var(--text-primary);
-}
-
-.ingredient-links {
-    display: flex;
-    gap: 8px;
-}
-
-.buy-link {
-    padding: 8px 14px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 600;
-    transition: all 0.3s;
-}
-
-.buy-link.amazon {
-    background-color: #ff9900;
-    color: #111;
-}
-
-.buy-link.amazon:hover {
-    background-color: #e68a00;
-    transform: translateY(-2px);
-}
-
-.buy-link.google {
-    background-color: #4285f4;
-    color: white;
-}
-
-.buy-link.google:hover {
-    background-color: #3367d6;
-    transform: translateY(-2px);
-}
-
-/* Instructions */
-.instructions {
-    display: flex;
-    flex-direction: column;
+    align-items: baseline;
+    margin-bottom: 8px;
     gap: 15px;
 }
 
-.instruction-step {
-    display: flex;
-    gap: 15px;
-    align-items: flex-start;
-}
-
-.step-number {
-    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
-    color: white;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 0.9rem;
-    flex-shrink: 0;
-}
-
-.step-text {
-    flex: 1;
-    line-height: 1.7;
-    padding-top: 3px;
-    color: var(--text-primary);
-}
-
-/* YouTube Videos Section */
-#videos-section {
-    background-color: var(--bg-secondary);
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: var(--card-shadow);
-    margin-bottom: 30px;
-}
-
-#videos-section h3 {
-    color: var(--accent-color);
+.item-name {
     font-size: 1.4rem;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--accent-color);
-}
-
-.videos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 20px;
-}
-
-.video-card {
-    text-decoration: none;
-    color: inherit;
-    background-color: var(--bg-tertiary);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.3s;
-}
-
-.video-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px var(--shadow-color);
-}
-
-.video-thumbnail-wrapper {
-    position: relative;
-}
-
-.video-thumbnail {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-}
-
-.play-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50px;
-    height: 50px;
-    background-color: rgba(231, 76, 60, 0.9);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.2rem;
-    opacity: 0;
-    transition: all 0.3s;
-}
-
-.video-card:hover .play-icon {
-    opacity: 1;
-}
-
-.video-info {
-    padding: 15px;
-}
-
-.video-title {
-    font-size: 0.95rem;
     color: var(--text-primary);
-    margin-bottom: 5px;
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    font-weight: 500;
+    flex: 1;
+    font-family: 'Georgia', serif;
 }
 
-.video-channel {
-    font-size: 0.85rem;
+.item-price {
+    font-size: 1.3rem;
+    color: var(--accent-color);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.item-description {
     color: var(--text-secondary);
-}
-
-/* Back to Top Button */
-#back-to-top {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: pointer;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s;
-    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
-}
-
-#back-to-top.visible {
-    opacity: 1;
-    visibility: visible;
-}
-
-#back-to-top:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.5);
+    font-size: 1rem;
+    line-height: 1.6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style: italic;
 }
 
 /* Footer */
 footer {
     text-align: center;
-    padding: 30px;
+    padding: 40px 20px;
     color: var(--text-secondary);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    animation: fadeIn 1s ease-out 0.4s both;
 }
 
-/* Make it look good on phones */
+footer p {
+    margin: 5px 0;
+    font-size: 1rem;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-    .nutrition-grid {
-        grid-template-columns: repeat(3, 1fr);
+    header h1 {
+        font-size: 2.5rem;
     }
-    
-    .nutrition-item:nth-child(4),
-    .nutrition-item:nth-child(5) {
-        grid-column: span 1;
+
+    .subtitle {
+        font-size: 1.1rem;
+    }
+
+    .menu-category {
+        padding: 25px;
+    }
+
+    .category-title {
+        font-size: 1.6rem;
+    }
+
+    .item-name {
+        font-size: 1.2rem;
+    }
+
+    .item-price {
+        font-size: 1.1rem;
+    }
+
+    .item-description {
+        font-size: 0.95rem;
+    }
+
+    .theme-toggle {
+        width: 45px;
+        height: 45px;
+        top: 15px;
+        right: 15px;
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
     header h1 {
         font-size: 2rem;
     }
-    
-    #search-form {
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .menu-category {
+        padding: 20px;
+    }
+
+    .category-title {
+        font-size: 1.4rem;
+    }
+
+    .item-header {
         flex-direction: column;
+        gap: 5px;
     }
-    
-    #search-button {
-        width: 100%;
+
+    .item-name {
+        font-size: 1.1rem;
     }
-    
-    .recipe-header {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .recipe-image {
-        width: 100%;
-        height: auto;
-        max-width: 300px;
-        margin: 0 auto;
-    }
-    
-    .recipe-info h2 {
-        font-size: 1.8rem;
-    }
-    
-    .ingredient-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .ingredient-links {
-        width: 100%;
-    }
-    
-    .buy-link {
-        flex: 1;
-        text-align: center;
-    }
-    
-    .videos-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .instruction-step {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .step-number {
+
+    .item-price {
+        font-size: 1rem;
         align-self: flex-start;
     }
-    
-    #back-to-top {
-        bottom: 20px;
-        right: 20px;
-        width: 45px;
-        height: 45px;
-    }
-    
-    .theme-toggle {
-        top: 10px;
-        right: 10px;
-        width: 40px;
-        height: 40px;
-    }
-    
-    .nutrition-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .nutrition-item:last-child {
-        grid-column: span 2;
+
+    .item-description {
+        font-size: 0.9rem;
     }
 }
